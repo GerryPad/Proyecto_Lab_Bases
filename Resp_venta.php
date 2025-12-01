@@ -216,7 +216,7 @@ $libros = infoLibro($categoria_seleccionada);
             TOTAL: $<span id="total">0</span>
         </div>
 
-<button onclick="efectuarVenta()" class="checkout-btn">Efectuar venta</button>
+<button type="button" onclick="efectuarVenta()" class="checkout-btn">Efectuar venta</button>
     </div>
 
 
@@ -273,27 +273,58 @@ $libros = infoLibro($categoria_seleccionada);
             document.getElementById("total").textContent = total;
         }
     // ✅ FUNCIÓN PUNTO 2 (VA ACÁ)
-    function efectuarVenta() {
-
-        if (Object.keys(carrito).length === 0) {
-            alert("El carrito está vacío");
-            return;
-        }
-
-        const form = document.createElement("form");
-        form.method = "POST";
-        form.action = "venta.php"; // tu archivo actual
-
-        const input = document.createElement("input");
-        input.type = "hidden";
-        input.name = "carrito";
-        input.value = JSON.stringify(carrito);
-
-        form.appendChild(input);
-        document.body.appendChild(form);
-        form.submit();
+async function efectuarVenta() {
+    // 1. Validar que hay cosas en el carrito
+    if (Object.keys(carrito).length === 0) {
+        alert("El carrito está vacío.");
+        return;
     }
 
+    // 2. Capturar los nombres escritos en los inputs
+    const nombreCliente = document.getElementById("clienteNombre").value.trim();
+    const nombreEmpleado = document.getElementById("empleadoNombre").value.trim();
+
+    // 3. Validar que el cliente no esté vacío (según tu tabla es obligatorio)
+    if (nombreCliente === "") {
+        alert("Por favor, ingresa el nombre del cliente.");
+        return;
+    }
+
+    // 4. Preparar el paquete de datos
+    const datos = {
+        cliente: nombreCliente,
+        empleado: nombreEmpleado,
+        carrito: carrito
+    };
+
+    try {
+        // 5. Enviar a PHP usando FETCH
+        const respuesta = await fetch('procesar_venta.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(datos)
+        });
+
+        const resultado = await respuesta.json();
+
+        if (resultado.ok) {
+            alert("✅ Venta realizada con éxito. ID Compra: " + resultado.id_compra);
+            // Limpiar todo
+            carrito = {};
+            total = 0;
+            actualizarCarrito();
+            document.getElementById("clienteNombre").value = "";
+            document.getElementById("empleadoNombre").value = "";
+            document.getElementById("total").innerText = "$0";
+        } else {
+            alert("❌ Error: " + resultado.mensaje);
+        }
+
+    } catch (error) {
+        console.error(error);
+        alert("Error de conexión con el servidor.");
+    }
+}
     </script>
 </body>
 </html>

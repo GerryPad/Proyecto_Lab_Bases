@@ -148,7 +148,7 @@
 
     <div class="input-group">
         <label for="empleadoNombre">Empleado:</label>
-        <input type="text" id="empleadoNombre" name="empleado" placeholder="Nombre del empleado" required>
+        <input type="text" id="empleadoNombre" name="empleado" placeholder="Nombre del empleado">
     </div>
 </div>
 
