@@ -22,35 +22,31 @@
     <title>Ventas - Librería APG</title>
     <style>
 
-	/* Estilos para el contenedor superior */
 .top-controls {
     display: flex;
-    gap: 20px; /* Espacio entre los dos campos */
+    gap: 20px; 
     margin-bottom: 20px;
     align-items: center;
 }
 
-/* Agrupamos label e input para que se ordenen bien */
 .input-group {
     display: flex;
-    flex-direction: column; /* Pone el label arriba del input */
+    flex-direction: column; 
 }
 
-/* Estilo de las etiquetas */
 .top-controls label {
     color: #ccc;
     margin-bottom: 5px;
     font-size: 14px;
 }
 
-/* Estilo de los inputs (cajas de texto) */
 .top-controls input {
     padding: 8px;
     border-radius: 5px;
     border: 1px solid #555;
     background-color: #333;
     color: white;
-    width: 200px; /* Ancho fijo para que se vean uniformes */
+    width: 200px; 
 }
 
         body {
@@ -106,6 +102,7 @@
             border-radius: 6px;
             color: white;
             cursor: pointer;
+	    border: none;
         }
 
         .remove-btn {
@@ -114,6 +111,7 @@
             border-radius: 5px;
             color: white;
             cursor: pointer;
+	    border: none;
         }
 
         .cart-item {
@@ -183,11 +181,10 @@ $libros = infoLibro($categoria_seleccionada);
     </form>
 </div>
 
-<div class="book-container">
     <?php if (count($libros) > 0): ?>
         <?php foreach ($libros as $libro): ?>
             
-            <div class="book-card">
+            <div class="book">
                 <span>
                     <?php echo $libro['titulo']; ?> — $<?php echo $libro['precio_venta']; ?>
                 </span>
@@ -202,7 +199,6 @@ $libros = infoLibro($categoria_seleccionada);
     <?php else: ?>
         <p>No hay libros disponibles en esta categoría.</p>
     <?php endif; ?>
-</div>
     </div>
 
 
