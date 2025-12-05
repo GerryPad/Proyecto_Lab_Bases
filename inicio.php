@@ -15,7 +15,6 @@
             margin: 0;
         }
 
-        /* Barra superior */
         .header {
             background-color: #2b2b2b;
             padding: 15px 20px;
@@ -29,7 +28,6 @@
             font-weight: bold;
         }
 
-        /* Botones de la parte superior */
         .right-buttons {
             display: flex;
             gap: 10px;
@@ -48,7 +46,6 @@
             background-color: #004dcc;
         }
 
-        /* Menú desplegable */
         .menu {
             margin: 20px;
         }
@@ -61,7 +58,6 @@
             border-radius: 5px;
         }
 
-        /* Galería de libros */
         .contenedor-libros {
             display: flex;
             flex-wrap: wrap;
@@ -79,14 +75,6 @@
             text-align: center;
         }
 
-        .libro img {
-            width: 100%;
-            height: 200px;
-            border-radius: 5px;
-            object-fit: cover;
-        }
-
-        /* Botón + */
         .plus-btn {
             position: absolute;
             top: 8px;
@@ -100,7 +88,6 @@
             cursor: pointer;
         }
 
-        /* Cuadro flotante */
         .info-box {
             display: none;
             position: absolute;
@@ -135,7 +122,6 @@
 </head>
 <body>
 
-<!-- Barra superior -->
 <div class="header">
     <div class="titulo">Librería APG</div>
 
@@ -145,14 +131,12 @@
     </div>
 </div>
 
-<!-- Menú de categorías -->
 <div class="menu">
     <form action="" method="GET">
         <label for="categoria" style="color:white;">Categoría:</label>
         
         <select name="categoria" id="categoria" onchange="this.form.submit()">
             <option value="todos">Mostrar todos</option>
-            
             <option value="1" <?= (isset($_GET['categoria']) && $_GET['categoria'] == '1') ? 'selected' : '' ?>>Clásicos</option>
             <option value="2" <?= (isset($_GET['categoria']) && $_GET['categoria'] == '2') ? 'selected' : '' ?>>Romance</option>
             <option value="3" <?= (isset($_GET['categoria']) && $_GET['categoria'] == '3') ? 'selected' : '' ?>>Terror</option>
@@ -160,31 +144,25 @@
             <option value="5" <?= (isset($_GET['categoria']) && $_GET['categoria'] == '5') ? 'selected' : '' ?>>Aventura</option>
             <option value="7" <?= (isset($_GET['categoria']) && $_GET['categoria'] == '7') ? 'selected' : '' ?>>Novela Negra</option>
             <option value="8" <?= (isset($_GET['categoria']) && $_GET['categoria'] == '8') ? 'selected' : '' ?>>Infantil</option>
-	    <option value="9" <?= (isset($_GET['categoria']) && $_GET['categoria'] == '9') ? 'selected' : '' ?>>Autoayuda</option>
+	        <option value="9" <?= (isset($_GET['categoria']) && $_GET['categoria'] == '9') ? 'selected' : '' ?>>Autoayuda</option>
             <option value="10" <?= (isset($_GET['categoria']) && $_GET['categoria'] == '10') ? 'selected' : '' ?>>Arte</option>
             </select>
     </form>
 </div>
 
-<!-- Imágenes de libros -->
 <div class="contenedor-libros">
 <?php
-    // 1. CORRECCIÓN: Usamos 'categoria' para coincidir con el <select name="categoria"> del HTML
     $filtro = isset($_GET['categoria']) ? $_GET['categoria'] : null;
-    
-    // CORRECCIÓN: Agregada la comilla de cierre que faltaba en "todos"
     if ($filtro == "todos") $filtro = null;
 
-    // 2. Llamamos a la función
     $libros = mostrarLibros($filtro);
 
-    // 3. Verificamos si hay datos
     if ($libros && count($libros) > 0) {
 
         foreach ($libros as $libro) {
             $id = $libro['id_libro'];
             $nombre = $libro['titulo'];
-	    $nombre_autor = $libro['nombre_autor'];         // Ya no sale el ID, sale el Nombre
+	    $nombre_autor = $libro['nombre_autor'];         
 	    $nombre_editorial = $libro['nombre_editorial'];
 	    $anio = isset($libro['year_publicacion']) ? $libro['year_publicacion'] : 'S/F';    
 ?>
@@ -199,13 +177,9 @@
            </div>
         </div>
     <?php 
-        } // Fin del foreach
-    } else {
-        // Mensaje si no hay libros
-        echo "<h3 style='color:white; padding:20px;'>No se encontraron libros para la categoría seleccionada (ID: $filtro).</h3>";
+        } 
     }
 ?>
 </div>
 </body>
 </html>
-	

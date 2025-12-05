@@ -5,12 +5,9 @@
     $carrito = json_decode($_POST['carrito'], true);
 
     if ($carrito && count($carrito) > 0) {
-
         foreach ($carrito as $titulo => $detalle) {
             $ok = descontarStockPorTitulo($titulo, $detalle['qty']);
-
             }
-
     }
 }
 ?>
@@ -22,35 +19,31 @@
     <title>Ventas - Librería APG</title>
     <style>
 
-	/* Estilos para el contenedor superior */
 .top-controls {
     display: flex;
-    gap: 20px; /* Espacio entre los dos campos */
+    gap: 20px; 
     margin-bottom: 20px;
     align-items: center;
 }
 
-/* Agrupamos label e input para que se ordenen bien */
 .input-group {
     display: flex;
-    flex-direction: column; /* Pone el label arriba del input */
+    flex-direction: column; 
 }
 
-/* Estilo de las etiquetas */
 .top-controls label {
     color: #ccc;
     margin-bottom: 5px;
     font-size: 14px;
 }
 
-/* Estilo de los inputs (cajas de texto) */
 .top-controls input {
     padding: 8px;
     border-radius: 5px;
     border: 1px solid #555;
     background-color: #333;
     color: white;
-    width: 200px; /* Ancho fijo para que se vean uniformes */
+    width: 200px; 
 }
 
         body {
@@ -106,6 +99,7 @@
             border-radius: 6px;
             color: white;
             cursor: pointer;
+            border: none;
         }
 
         .remove-btn {
@@ -114,6 +108,16 @@
             border-radius: 5px;
             color: white;
             cursor: pointer;
+            border: none;
+        }
+
+        .buy-btn {
+            background-color: #12db33ff;
+            padding: 4px 8px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            border: none;
         }
 
         .cart-item {
@@ -137,29 +141,24 @@
 
 <body>
 
-    <!-- PANEL IZQUIERDO -->
     <div class="left-panel">
-
         <div class="top-controls">
-    <div class="input-group">
-        <label for="clienteNombre">Cliente:</label>
-        <input type="text" id="clienteNombre" name="cliente" placeholder="Nombre del cliente" required>
+        <div class="input-group">
+            <label for="clienteNombre">Cliente:</label>
+            <input type="text" id="clienteNombre" name="cliente" placeholder="Nombre del cliente" required>
+        </div>
+
+        <div class="input-group">
+            <label for="empleadoNombre">Empleado:</label>
+            <input type="text" id="empleadoNombre" name="empleado" placeholder="Nombre del empleado">
+        </div>
     </div>
 
-    <div class="input-group">
-        <label for="empleadoNombre">Empleado:</label>
-        <input type="text" id="empleadoNombre" name="empleado" placeholder="Nombre del empleado">
-    </div>
-</div>
-
-        <div class="header">Libros</div>
+    <div class="header">Libros</div>
 <?php
-// ... tus includes ...
 
-// 1. Capturamos la categoría de la URL (si existe)
 $categoria_seleccionada = isset($_GET['categoria']) ? $_GET['categoria'] : null;
 
-// 2. Llamamos a TU función existente, pasándole el filtro
 $libros = infoLibro($categoria_seleccionada);
 ?>
 
@@ -178,12 +177,10 @@ $libros = infoLibro($categoria_seleccionada);
             <option value="8" <?php if($categoria_seleccionada == '8') echo 'selected'; ?>>Infantil</option>
             <option value="9" <?php if($categoria_seleccionada == '9') echo 'selected'; ?>>Autoayuda</option>
             <option value="10" <?php if($categoria_seleccionada == '10') echo 'selected'; ?>>Arte</option>
-
-            </select>
+        </select>
     </form>
 </div>
 
-<div class="book-container">
     <?php if (count($libros) > 0): ?>
         <?php foreach ($libros as $libro): ?>
             
@@ -202,11 +199,7 @@ $libros = infoLibro($categoria_seleccionada);
     <?php else: ?>
         <p>No hay libros disponibles en esta categoría.</p>
     <?php endif; ?>
-</div>
-    </div>
 
-
-    <!-- PANEL DERECHO -->
     <div class="right-panel">
         <h2>Carrito de compra</h2>
 
@@ -216,20 +209,16 @@ $libros = infoLibro($categoria_seleccionada);
             TOTAL: $<span id="total">0</span>
         </div>
 
-<button type="button" onclick="efectuarVenta()" class="checkout-btn">Efectuar venta</button>
+        <button type="button" onclick="efectuarVenta()" class="buy-btn">Efectuar venta</button>
     </div>
 
 
     <script>
         let total = 0;
-
-        // Carrito como objeto
         let carrito = {};
 
         
         function addToCart(name, price) {
-
-            // Si no existe, agregarlo
             if (!carrito[name]) {
                 carrito[name] = { price: price, qty: 1 };
             } else {
@@ -272,25 +261,21 @@ $libros = infoLibro($categoria_seleccionada);
 
             document.getElementById("total").textContent = total;
         }
-    // ✅ FUNCIÓN PUNTO 2 (VA ACÁ)
+
 async function efectuarVenta() {
-    // 1. Validar que hay cosas en el carrito
     if (Object.keys(carrito).length === 0) {
         alert("El carrito está vacío.");
         return;
     }
 
-    // 2. Capturar los nombres escritos en los inputs
     const nombreCliente = document.getElementById("clienteNombre").value.trim();
     const nombreEmpleado = document.getElementById("empleadoNombre").value.trim();
 
-    // 3. Validar que el cliente no esté vacío (según tu tabla es obligatorio)
     if (nombreCliente === "") {
         alert("Por favor, ingresa el nombre del cliente.");
         return;
     }
 
-    // 4. Preparar el paquete de datos
     const datos = {
         cliente: nombreCliente,
         empleado: nombreEmpleado,
@@ -298,7 +283,6 @@ async function efectuarVenta() {
     };
 
     try {
-        // 5. Enviar a PHP usando FETCH
         const respuesta = await fetch('procesar_venta.php', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -308,8 +292,7 @@ async function efectuarVenta() {
         const resultado = await respuesta.json();
 
         if (resultado.ok) {
-            alert("✅ Venta realizada con éxito. ID Compra: " + resultado.id_compra);
-            // Limpiar todo
+            alert("Venta realizada con éxito. ID Compra: " + resultado.id_compra);
             carrito = {};
             total = 0;
             actualizarCarrito();
@@ -317,7 +300,7 @@ async function efectuarVenta() {
             document.getElementById("empleadoNombre").value = "";
             document.getElementById("total").innerText = "$0";
         } else {
-            alert("❌ Error: " + resultado.mensaje);
+            alert("Error: " + resultado.mensaje);
         }
 
     } catch (error) {

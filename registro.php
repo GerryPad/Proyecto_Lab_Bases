@@ -2,7 +2,6 @@
 	include "/var/www/gerardopadiula/proyecto/funciones.php";
 
 	$mensaje="";
-// Ejemplo simple de manejo del formulario (solo demostración)
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellido'];
@@ -90,19 +89,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <h2>Registro</h2>
 
     <form method="POST">
-
         <input type="text" name="nombre" placeholder="Nombre" required>
-
         <input type="text" name="apellido" placeholder="Apellido" required>
-
         <input type="email" name="correo" placeholder="Correo electrónico" required>
-
         <input type="tel" name="telefono" placeholder="Teléfono" required>
-
         <input type="text" name="domicilio" placeholder="Domicilio" required>
-
         <input type="password" name="password" placeholder="Contraseña" required>
-
         <input type="submit" value="Registrarse" class="btn">
     </form>
 

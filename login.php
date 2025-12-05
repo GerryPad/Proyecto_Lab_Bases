@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $correo = $_POST["correo"] ?? '';
     $password = $_POST["password"] ?? '';
 
-    $usuario = inicioSesion($correo);
+    $usuario = inicioSesion($correo); 
 
     if ($usuario) {
         if ($password === $usuario['password']) {
