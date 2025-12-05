@@ -1,3 +1,7 @@
+<?php
+	include "/var/www/gerardopadiula/proyecto/funciones.php";
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -143,96 +147,65 @@
 
 <!-- Menú de categorías -->
 <div class="menu">
-    <label for="categoria">Categoría:</label>
-    <select id="categoria">
-        <option value="">Seleccionar</option>
-        <option>Fantasía</option>
-        <option>Suspenso</option>
-        <option>Ciencia ficción</option>
-        <option>Romance</option>
-        <option>Terror</option>
-    </select>
+    <form action="" method="GET">
+        <label for="categoria" style="color:white;">Categoría:</label>
+        
+        <select name="categoria" id="categoria" onchange="this.form.submit()">
+            <option value="todos">Mostrar todos</option>
+            
+            <option value="1" <?= (isset($_GET['categoria']) && $_GET['categoria'] == '1') ? 'selected' : '' ?>>Clásicos</option>
+            <option value="2" <?= (isset($_GET['categoria']) && $_GET['categoria'] == '2') ? 'selected' : '' ?>>Romance</option>
+            <option value="3" <?= (isset($_GET['categoria']) && $_GET['categoria'] == '3') ? 'selected' : '' ?>>Terror</option>
+            <option value="4" <?= (isset($_GET['categoria']) && $_GET['categoria'] == '4') ? 'selected' : '' ?>>Ciencia Ficción</option>
+            <option value="5" <?= (isset($_GET['categoria']) && $_GET['categoria'] == '5') ? 'selected' : '' ?>>Aventura</option>
+            <option value="7" <?= (isset($_GET['categoria']) && $_GET['categoria'] == '7') ? 'selected' : '' ?>>Novela Negra</option>
+            <option value="8" <?= (isset($_GET['categoria']) && $_GET['categoria'] == '8') ? 'selected' : '' ?>>Infantil</option>
+	    <option value="9" <?= (isset($_GET['categoria']) && $_GET['categoria'] == '9') ? 'selected' : '' ?>>Autoayuda</option>
+            <option value="10" <?= (isset($_GET['categoria']) && $_GET['categoria'] == '10') ? 'selected' : '' ?>>Arte</option>
+            </select>
+    </form>
 </div>
 
 <!-- Imágenes de libros -->
 <div class="contenedor-libros">
+<?php
+    // 1. CORRECCIÓN: Usamos 'categoria' para coincidir con el <select name="categoria"> del HTML
+    $filtro = isset($_GET['categoria']) ? $_GET['categoria'] : null;
+    
+    // CORRECCIÓN: Agregada la comilla de cierre que faltaba en "todos"
+    if ($filtro == "todos") $filtro = null;
 
-    <!-- LIBRO 1 -->
-    <div class="libro">
-        <button class="plus-btn" onclick="mostrar('info1')">+</button>
-        <img src="https://covers.openlibrary.org/b/id/7984916-L.jpg" alt="Libro 1">
-        <p>El Hobbit</p>
+    // 2. Llamamos a la función
+    $libros = mostrarLibros($filtro);
 
-        <div class="info-box" id="info1">
-            <span class="cerrar" onclick="cerrar('info1')">X</span>
-            <p><strong>Año:</strong> 1937</p>
-            <p><strong>Autor:</strong> J.R.R. Tolkien</p>
-            <p><strong>Editorial:</strong> Allen & Unwin</p>
-            <p>Un clásico de fantasía sobre la aventura de Bilbo Bolsón.</p>
+    // 3. Verificamos si hay datos
+    if ($libros && count($libros) > 0) {
+
+        foreach ($libros as $libro) {
+            $id = $libro['id_libro'];
+            $nombre = $libro['titulo'];
+	    $nombre_autor = $libro['nombre_autor'];         // Ya no sale el ID, sale el Nombre
+	    $nombre_editorial = $libro['nombre_editorial'];
+	    $anio = isset($libro['year_publicacion']) ? $libro['year_publicacion'] : 'S/F';    
+?>
+<div class="libro" style="display:inline-block; margin:15px; width: 160px; vertical-align: top; text-align:center; position: relative;">
+                <button class="plus-btn" onclick="mostrar('info<?= $id ?>')" style="float:right; cursor:pointer;">+</button>
+          <p style="color: white; font-weight: bold; margin-top: 5px; font-size: 14px;"><?= $nombre ?></p>
+            <div class="info-box" id="info<?= $id ?>">
+               <span class="cerrar" onclick="cerrar('info<?= $id ?>')">X</span>
+               <p><strong>Año:</strong> <?= $anio ?></p>
+               <p><strong>Autor:</strong> <?= $nombre_autor ?></p>
+               <p><strong>Editorial:</strong> <?= $nombre_editorial ?></p>
+           </div>
         </div>
-    </div>
-
-    <!-- LIBRO 2 -->
-    <div class="libro">
-        <button class="plus-btn" onclick="mostrar('info2')">+</button>
-        <img src="https://covers.openlibrary.org/b/id/8228691-L.jpg" alt="Libro 2">
-        <p>1984</p>
-
-        <div class="info-box" id="info2">
-            <span class="cerrar" onclick="cerrar('info2')">X</span>
-            <p><strong>Año:</strong> 1949</p>
-            <p><strong>Autor:</strong> George Orwell</p>
-            <p><strong>Editorial:</strong> Secker & Warburg</p>
-            <p>Una novela distópica sobre vigilancia y control del estado.</p>
-        </div>
-    </div>
-
-    <!-- LIBRO 3 -->
-    <div class="libro">
-        <button class="plus-btn" onclick="mostrar('info3')">+</button>
-        <img src="https://covers.openlibrary.org/b/id/10523358-L.jpg" alt="Libro 3">
-        <p>El Principito</p>
-
-        <div class="info-box" id="info3">
-            <span class="cerrar" onclick="cerrar('info3')">X</span>
-            <p><strong>Año:</strong> 1943</p>
-            <p><strong>Autor:</strong> Antoine de Saint-Exupéry</p>
-            <p><strong>Editorial:</strong> Reynal & Hitchcock</p>
-            <p>Una historia sobre la inocencia, amistad y ver con el corazón.</p>
-        </div>
-    </div>
-
-    <!-- LIBRO 4 -->
-    <div class="libro">
-        <button class="plus-btn" onclick="mostrar('info4')">+</button>
-        <img src="https://covers.openlibrary.org/b/id/11244644-L.jpg" alt="Libro 4">
-        <p>Dune</p>
-
-        <div class="info-box" id="info4">
-            <span class="cerrar" onclick="cerrar('info4')">X</span>
-            <p><strong>Año:</strong> 1965</p>
-            <p><strong>Autor:</strong> Frank Herbert</p>
-            <p><strong>Editorial:</strong> Chilton Books</p>
-            <p>Una épica historia política y ecológica en el desierto de Arrakis.</p>
-        </div>
-    </div>
-
-    <!-- LIBRO 5 -->
-    <div class="libro">
-        <button class="plus-btn" onclick="mostrar('info5')">+</button>
-        <img src="https://covers.openlibrary.org/b/id/11053261-L.jpg" alt="Libro 5">
-        <p>It</p>
-
-        <div class="info-box" id="info5">
-            <span class="cerrar" onclick="cerrar('info5')">X</span>
-            <p><strong>Año:</strong> 1986</p>
-            <p><strong>Autor:</strong> Stephen King</p>
-            <p><strong>Editorial:</strong> Viking Press</p>
-            <p>Una novela de terror sobre un mal que despierta cada 27 años.</p>
-        </div>
-    </div>
-
+    <?php 
+        } // Fin del foreach
+    } else {
+        // Mensaje si no hay libros
+        echo "<h3 style='color:white; padding:20px;'>No se encontraron libros para la categoría seleccionada (ID: $filtro).</h3>";
+    }
+?>
 </div>
-
 </body>
 </html>
+	

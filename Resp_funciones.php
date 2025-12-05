@@ -72,8 +72,11 @@ function infoLibro($id_genero = null) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function descontarStockPorTitulo($titulo, $cantidad) {
-    $pdo = conecta();
+function descontarStockPorTitulo($titulo, $cantidad, $pdo = null) {
+    // Si no se pasa una conexión, crear una nueva
+    if ($pdo === null) {
+        $pdo = conecta();
+    }
 
     // Obtener información del libro y stock
     $stmt = $pdo->prepare("
@@ -131,6 +134,29 @@ function obtenerIdLibroPorTitulo($titulo) {
     $stmt->execute([$titulo]);
     $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
     return $resultado ? $resultado['id_libro'] : false;
+}
+
+// Verifica el stock disponible de un libro por título
+function verificarStockPorTitulo($titulo, $cantidadRequerida) {
+    $pdo = conecta();
+    $stmt = $pdo->prepare("
+        SELECT i.stock
+        FROM libro l
+        INNER JOIN informacion i ON l.informacion = i.id_informacion
+        WHERE l.titulo = ?
+    ");
+    $stmt->execute([$titulo]);
+    $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$resultado) {
+        return ['existe' => false, 'stock' => 0];
+    }
+    
+    return [
+        'existe' => true,
+        'stock' => (int)$resultado['stock'],
+        'suficiente' => (int)$resultado['stock'] >= $cantidadRequerida
+    ];
 }
 
 ?>

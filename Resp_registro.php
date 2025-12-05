@@ -1,5 +1,7 @@
 <?php
 	include "/var/www/gerardopadiula/proyecto/funciones.php";
+
+	$mensaje="";
 // Ejemplo simple de manejo del formulario (solo demostración)
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nombre = $_POST['nombre'];
@@ -11,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     newRegistro($nombre, $apellido, $correo, $telefono, $domicilio, $password);
 
-    echo "<p style='color: lightgreen; text-align:center;'>Registro correcto de: $nombre $apellido</p>";
+    $mensaje = "Registro correcto";
 }
 ?>
 
@@ -72,6 +74,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             color: #66aaff;
             text-decoration: none;
         }
+	
+	.mensaje{
+	    margin-top: 15px;
+	    color: lightgreen;
+	    text-align: center;
+	    font-size: 16px;
+	    font-weight: bold;
+	}
     </style>
 </head>
 <body>
@@ -95,6 +105,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <input type="submit" value="Registrarse" class="btn">
     </form>
+
+	<?php if(!empty ($mensaje)) : ?>
+		<p class="mensaje"><?=$mensaje ?></p>
+	<?php endif; ?>
 
     <div class="login">
         <p>¿Ya tienes una cuenta? <a href="login.php">Iniciar sesión</a></p>

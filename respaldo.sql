@@ -58,7 +58,7 @@ CREATE TABLE `compra` (
   KEY `fk_cliente` (`cliente`),
   CONSTRAINT `fk_cliente` FOREIGN KEY (`cliente`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fkComprasEmpleado` FOREIGN KEY (`id_empleado`) REFERENCES `empleado` (`id_empleado`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +67,7 @@ CREATE TABLE `compra` (
 
 LOCK TABLES `compra` WRITE;
 /*!40000 ALTER TABLE `compra` DISABLE KEYS */;
-INSERT INTO `compra` VALUES (8,1,'2025-11-29',NULL),(9,4,'2025-11-29',NULL),(10,4,'2025-11-29',NULL),(11,1,'2025-11-29',NULL),(12,4,'2025-11-29',NULL);
+INSERT INTO `compra` VALUES (8,1,'2025-11-29',NULL),(9,4,'2025-11-29',NULL),(10,4,'2025-11-29',NULL),(11,1,'2025-11-29',NULL),(12,4,'2025-11-29',NULL),(13,1,'2025-12-01',NULL),(22,1,'2025-12-01',NULL),(23,1,'2025-12-01',NULL),(24,1,'2025-12-01',2),(38,4,'2025-12-05',NULL),(39,5,'2025-12-05',NULL);
 /*!40000 ALTER TABLE `compra` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -144,7 +144,7 @@ CREATE TABLE `genero` (
 
 LOCK TABLES `genero` WRITE;
 /*!40000 ALTER TABLE `genero` DISABLE KEYS */;
-INSERT INTO `genero` VALUES (1,'Clasicos',''),(2,'Romance',''),(3,'Terror',''),(4,'Ciencia Ficcion',''),(5,'Aventura',''),(6,'Biografia',''),(7,'Novela Negra',''),(8,'Infantil',''),(9,'Autoayuda',''),(10,'Arte','');
+INSERT INTO `genero` VALUES (1,'Clasicos','Libros que cualquier lector deberia leer.'),(2,'Romance','Historias donde las parejas y el amor son el tema principal.'),(3,'Terror','Para aquellos que tengan ganas de sentir escalofrios.'),(4,'Ciencia Ficcion','Para los lectores que busquen escapar de la realidad.'),(5,'Aventura','Para quienes busquen viajar sin moverse de su casa.'),(6,'Biografia','Conoce sobre las vidas de tus personajes favoritos.'),(7,'Novela Negra','Historias policiacas mas centradas en la critica social.'),(8,'Infantil','Para fomentar la lectura en los pequeñitos.'),(9,'Autoayuda','Consejos para darte soluciones en las situaciones cotidianas.'),(10,'Arte','Aquellos libros enfocados en lo visual mas que en la narracion.');
 /*!40000 ALTER TABLE `genero` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -171,7 +171,7 @@ CREATE TABLE `informacion` (
 
 LOCK TABLES `informacion` WRITE;
 /*!40000 ALTER TABLE `informacion` DISABLE KEYS */;
-INSERT INTO `informacion` VALUES (1,'1605-01-16',13,120,180),(2,'1967-05-30',12,150,230),(3,'1813-01-28',7,130,200),(4,'1949-06-08',20,140,220),(5,'1943-04-06',25,110,180),(6,'1866-01-01',7,160,250),(7,'1954-07-29',15,200,320),(8,'1997-06-26',30,180,310),(9,'1977-01-28',4,190,330),(10,'1952-09-01',10,125,210),(11,'1963-06-28',6,145,240),(12,'1944-01-01',10,135,220),(13,'1982-01-01',14,155,260),(14,'1876-01-01',18,120,195),(15,'1890-06-20',8,140,225),(16,'1845-01-29',9,130,210),(17,'1838-02-01',10,150,240),(18,'1862-01-01',7,170,280),(19,'1869-01-01',15,210,350),(20,'1915-01-01',12,135,220);
+INSERT INTO `informacion` VALUES (1,'1605-01-16',11,120,180),(2,'1967-05-30',10,150,230),(3,'1813-01-28',7,130,200),(4,'1949-06-08',17,140,220),(5,'1943-04-06',22,110,180),(6,'1866-01-01',5,160,250),(7,'1954-07-29',15,200,320),(8,'1997-06-26',30,180,310),(9,'1977-01-28',4,190,330),(10,'1952-09-01',10,125,210),(11,'1963-06-28',5,145,240),(12,'1944-01-01',9,135,220),(13,'1982-01-01',14,155,260),(14,'1876-01-01',18,120,195),(15,'1890-06-20',7,140,225),(16,'1845-01-29',9,130,210),(17,'1838-02-01',10,150,240),(18,'1862-01-01',7,170,280),(19,'1869-01-01',15,210,350),(20,'1915-01-01',12,135,220);
 /*!40000 ALTER TABLE `informacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -241,13 +241,15 @@ DROP TABLE IF EXISTS `libro_compra`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `libro_compra` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `id_libro` int NOT NULL,
   `id_compra` int NOT NULL,
-  PRIMARY KEY (`id_libro`,`id_compra`),
+  PRIMARY KEY (`id`),
+  KEY `fk_lib_com` (`id_libro`),
   KEY `fk_com_lib` (`id_compra`),
   CONSTRAINT `fk_com_lib` FOREIGN KEY (`id_compra`) REFERENCES `compra` (`id_compra`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_lib_com` FOREIGN KEY (`id_libro`) REFERENCES `libro` (`id_libro`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -256,7 +258,7 @@ CREATE TABLE `libro_compra` (
 
 LOCK TABLES `libro_compra` WRITE;
 /*!40000 ALTER TABLE `libro_compra` DISABLE KEYS */;
-INSERT INTO `libro_compra` VALUES (1,8),(2,8),(1,9),(2,9),(1,10),(20,11),(1,12),(2,12);
+INSERT INTO `libro_compra` VALUES (1,1,8),(2,1,9),(3,1,10),(4,1,12),(5,1,24),(6,2,8),(7,2,9),(8,2,12),(9,2,24),(10,4,22),(11,4,23),(12,4,38),(13,5,22),(14,5,23),(15,9,13),(16,11,38),(17,12,38),(18,15,38),(19,16,13),(20,20,11),(21,1,39),(22,2,39),(23,5,39),(24,6,39),(25,6,39);
 /*!40000 ALTER TABLE `libro_compra` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -331,7 +333,7 @@ CREATE TABLE `usuario` (
   `password` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `correo` (`correo`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -340,7 +342,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Gerardo','Miranda','gera@gmail.com','4432611287','kldnsnfjlsnjlfsn','55151'),(4,'Anibal','Zavala','zava@gmail.com','4431302114','kfnrgrfjfgn','123456'),(5,'Pedro','Fernandez','pedro@gmail.com','443236548','kfrekgekgnjenje','987654321'),(6,'Registro','Prueba','prueba@gmail.com','443568555','ewouiwuoiwei','12345'),(10,'hola','hola','1234@gmail.com','445897858','wqioeoqwihd','1234566');
+INSERT INTO `usuario` VALUES (1,'Gerardo','Miranda','gera@gmail.com','4432611287','kldnsnfjlsnjlfsn','55151'),(4,'Anibal','Zavala','zava@gmail.com','4431302114','kfnrgrfjfgn','123456'),(5,'Pedro','Fernandez','pedro@gmail.com','443236548','kfrekgekgnjenje','987654321'),(6,'Registro','Prueba','prueba@gmail.com','443568555','ewouiwuoiwei','12345'),(10,'hola','hola','1234@gmail.com','445897858','wqioeoqwihd','1234566'),(13,'Pedro','Fernadez','1912011f@umich.mx','4436978782','Villagran','Halomania123');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -353,4 +355,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-30 19:19:56
+-- Dump completed on 2025-12-05  3:44:54
